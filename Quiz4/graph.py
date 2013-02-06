@@ -233,7 +233,26 @@ def connected_components(G):
     """
     # start with empty list of components
     C = [ ]
+    lenC = 0
+    index = 0
+    unaccountedFor = 
+    while lenC < len(self._vertices):
+        visited = set()
+        todo = [ (root, None) ]
+        E = set()
+        while todo:
+            (cur, e) = todo.pop()
+            if cur in visited: continue
 
+            if e: 
+                # return cannonical form of the edge
+                E.add( (min(e), max(e) ) )
+            visited.add(cur)
+
+            for n in G.adj_to(cur):
+                if n not in visited:
+                    todo.append((n, (cur, n)))
+            
     # sort the components list by the min on each element
     C.sort(key=min)
     return C
