@@ -1,0 +1,36 @@
+If using the VM:
+
+open a terminal, make a working directory for today, eg
+    mkdir 2013-02-05
+download these files into your working directory
+    bfs.py                  
+    dfs.py
+    display.py
+    graph.py
+    walk.py   
+start xdot in the background:
+    xdot &
+
+finally, generate an animation of the random walk 
+    python3 walk.py
+and produce the file
+    walk-graph.dot
+and open this in xdot.  You will see the results of the walk.  
+
+Now animate again, and this time you will see the step by step running
+of the algorithm.
+
+Ubuntu install:
+
+If using your own Ubuntu VM, you need to install graphviz and xdot.  
+But the xdot that the installer installs is not the one that monitors the 
+file for update and re-renders.
+
+After installing xdot, you want to download xdot/xdot.py, and do this command
+    sudo cp xdot.py /usr/share/xdot
+
+OSX:
+    go to www.graphviz.org 
+and download the version for your OSX.  To view the graph during animation,
+use the graphviz application instead of xdot.
+
