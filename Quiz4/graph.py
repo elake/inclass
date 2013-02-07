@@ -12,6 +12,7 @@ Note: this means no self loops, i.e an edge (v, v) from v back to itself.
 """
 
 import random
+import copy
 
 class Graph:
     """
@@ -225,18 +226,44 @@ def connected_components(G):
     Hint: when a connected component has fewer vertices than there are in G
     there must be at least one other connected component.
 
-    >>> G = graph_from_edges( [ (1, 2), (2, 3),  (4, 5) )
+    >>> G = graph_from_edges( [ (1, 2), (2, 3),  (4, 5) ] )
     >>> C = connected_components(G)
     >>> C[0] == {1, 2, 3}
+    True
     >>> C[1] == {4, 5}
-
+    True
+    >>> G = graph_from_edges( [ (0, 1), (1, 2), (2, 7), (9, 5) ] )
+    >>> C = connected_components(G)
+    >>> C[0] == {0, 1, 2, 7}
+    True
+    >>> C[1] == {5, 9}
+    True
+    >>> G.add_vertex(12)
+    >>> C = connected_components(G)
+    >>> C[0] == {0, 1, 2, 7}
+    True
+    >>> C[1] == {5, 9}
+    True
+    >>> C[2] == {12}
+    True
+    >>> G.add_edge( (5, 2) )
+    >>> C = connected_components(G)
+    >>> C[0] == {0, 1, 2, 5, 7, 9}
+    True
+    >>> C[1] == {12}
+    True
+    
     """
     # start with empty list of components
-    C = [ ]
+    C = []
+    # the number of items within all the sets of C
     lenC = 0
-    index = 0
-    unaccountedFor = 
-    while lenC < len(self._vertices):
+    # vertices not yet in C
+    unaccountedFor = copy.deepcopy(G._vertices)
+    while lenC < len(G._vertices):
+        # start with any random vertex not yet accounted for
+        root = random.sample(unaccountedFor, 1)[0]
+        # run through the spanning tree code, more or less
         visited = set()
         todo = [ (root, None) ]
         E = set()
@@ -248,10 +275,16 @@ def connected_components(G):
                 # return cannonical form of the edge
                 E.add( (min(e), max(e) ) )
             visited.add(cur)
+            # vertices in visited will soon be accounted for
+            unaccountedFor.remove(cur)
+            # and therefore lenC will grow by 1 vertice
+            lenC += 1
 
             for n in G.adj_to(cur):
                 if n not in visited:
                     todo.append((n, (cur, n)))
+        # each spanning tree is a set for C
+        C.append(visited)
             
     # sort the components list by the min on each element
     C.sort(key=min)
