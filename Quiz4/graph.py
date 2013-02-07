@@ -238,7 +238,7 @@ def connected_components(G):
     True
     >>> C[1] == {5, 9}
     True
-    >>> G.add_vertex(12)
+    >>> G.add_vertex(12) # note no edges
     >>> C = connected_components(G)
     >>> C[0] == {0, 1, 2, 7}
     True
@@ -251,6 +251,10 @@ def connected_components(G):
     >>> C[0] == {0, 1, 2, 5, 7, 9}
     True
     >>> C[1] == {12}
+    True
+    >>> G.add_edge((12, 16))
+    >>> C = connected_components(G)
+    >>> C[1] == {12, 16}
     True
     
     """
