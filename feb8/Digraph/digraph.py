@@ -7,11 +7,11 @@ import display
 
 class Graph:
     """
-    Undirected graph.
+    Directed graph.
 
     The vertices must be comparable and immutable.
 
-    The edge (1, 2) is the same as the edge (2, 1).
+    The edge (1, 2) is not the same as the edge (2, 1).
     """
 
     def __init__(self):
@@ -25,7 +25,7 @@ class Graph:
         >>> G = Graph()
         >>> G.add_vertex(1)
         >>> G
-        Graph({1}, set())
+        Graph({1: set()})
         """
         if v not in self._adjsets:
             self._adjsets[v] = set()
@@ -41,7 +41,7 @@ class Graph:
         >>> G.add_edge((2, 1))
         >>> G.add_edge((1, 3))
         >>> G.num_edges()
-        2
+        3
         >>> G.num_vertices()
         3
         """
@@ -51,13 +51,16 @@ class Graph:
 
         # Add the edge
         self._adjsets[e[0]].add(e[1])
-        self._adjsets[e[1]].add(e[0])
 
     def edges(self):
         """
         Returns the set of edges in the graph as ordered tuples.
         """
-        pass
+        edges = set()
+        for s in self._adjsets:
+            for e in self._adjsets[s]:
+                edges.add((s, e))
+        return edges
 
     def draw(self, filename, attr = {}):
         """
@@ -71,7 +74,7 @@ class Graph:
         m = 0
         for v in self._adjsets:
             m += len(self._adjsets[v])
-        return m // 2
+        return m
 
     def num_vertices(self):
         """
@@ -79,20 +82,28 @@ class Graph:
         """
         return len(self._adjsets)
 
-    def adj_to(self, v):
+    def access_to(self, v):
         """
-        Returns neighbors of v.
+        Returns neighbors you can travel to from v.
 
         >>> G = Graph()
         >>> for v in [1, 2, 3]: G.add_vertex(v)
         >>> G.add_edge((1, 2))
         >>> G.add_edge((1, 3))
-        >>> G.adj_to(1) == { 2, 3 }
+        >>> G.access_to(1) == { 2, 3 }
         True
-        >>> G.adj_to(3) == { 1 }
-        True
+        >>> G.access_to(3) == { 1 }
+        False
         """
         return self._adjsets[v]
+
+    def adj_to(self, v):
+        neighbors = set()
+        for n in self._adjsets[v]: neighbors.add(n)
+        for n in self._adjsets:
+            if v in self._adjsets[n]:
+                neighbors.add(n)
+        return neighbors
 
 def random_graph(n, m):
     """
@@ -112,7 +123,7 @@ def random_graph(n, m):
     for v in range(n):
         G.add_vertex(v)
 
-    max_num_edges = n * (n-1) // 2
+    max_num_edges = n * (n-1)
     if m > max_num_edges:
         raise ValueError("For {} vertices, you want {} edges, but can only have a maximum of {}".format(n, m, max_num_edges))
 
