@@ -1,7 +1,7 @@
 # an extension to the graph module that generates .dot files for graphviz
 import time
 import sys
-import digraph.py
+import digraph
 def gen_dot_desc(G, attributes={}):
     """
     >>> g = ({1, 2, 3}, {(1, 2), (1, 3)} )
