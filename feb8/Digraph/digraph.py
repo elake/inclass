@@ -1,5 +1,5 @@
 """
-Graph module for undirected graphs.
+Graph module for directed graphs.
 """
 
 import random
