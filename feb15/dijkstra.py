@@ -19,3 +19,4 @@ def least_cost_path(G, start, dest, cost):
         return path
     else:
         return None
+
